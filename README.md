@@ -173,17 +173,48 @@ Comment out all lines under "Share Definitions" and add the following lines:
 [nas]
     path = /mnt/qnap/nas
     writeable = Yes
+
+    # 1. Multi-Device Compatibility Layers
+    # catia: handles illegal characters (: ? *) between Linux/Windows/Mac
+    # fruit: speeds up Apple devices
+    # streams_xattr: stores metadata in a way all modern OSs understand
+    vfs objects = catia fruit streams_xattr
+
+    # 2. Universal Performance Settings
+    # Use 'stream' for metadata so it's compatible with iPad/Apple TV apps
+    fruit:metadata = stream
+    fruit:resource = file
+    fruit:aapl = yes
+
+    # 3. Prevent Hidden File Clutter
+    # This prevents the creation of .DS_Store and ._ files across the network
+    # which can sometimes confuse Linux-based media players (Plex/Kodi)
+    fruit:veto_appledouble = yes
+    veto files = /._*/.DS_Store/
+    delete veto files = yes
+
+    # 4. Critical for Apple TV / iPad Apps (Infuse, VLC)
+    # These apps rely on fast directory listings to show movie posters/metadata
+    readdir_attr:aapl_finder_info = yes
+    readdir_attr:aapl_max_access = yes
+
+    # 5. Your existing permission logic
     create mask = 0775
     directory mask = 0775
     public = no
     force user = $USER
     force group = $USER
 
+
 [timemachine]
     path = /mnt/qnap/timemachine
     writeable = Yes
     vfs objects = catia fruit streams_xattr
     fruit:time machine = yes
+    # Limit the advertised size to 1 Terabyte
+    fruit:time machine max size = 1T
+    fruit:aapl = yes
+    fruit:model = MacPro
     public = no
 
 # Setup SMB User (replace $USER with your username)
