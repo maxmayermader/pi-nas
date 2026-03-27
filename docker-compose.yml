@@ -228,11 +228,11 @@ services:
          - TS_ACCEPT_DNS=true # Optional: Accept DNS configuration from admin console
          # Optional: To enable Subnet Routing, add:
          # - TS_EXTRA_ARGS=--advertise-routes=192.168.1.0/24 # Replace with your local subnet
-       cap_add:
+      cap_add:
          - NET_ADMIN # Required for network administration
          - SYS_MODULE # Required for kernel module operations
-       restart: always
-       privileged: true # Use privileged mode for full access to host network features
+      restart: always
+      privileged: true # Use privileged mode for full access to host network features
 
 volumes:
   portainer_data:
@@ -245,4 +245,3 @@ networks:
   influxdb:
   nextcloud_network:
     driver: bridge
-
