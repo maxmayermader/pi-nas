@@ -212,6 +212,18 @@ services:
     privileged: true    # needed for USB/Bluetooth device access
     restart: unless-stopped
 
+    matter-server:
+     image: ghcr.io/home-assistant-libs/python-matter-server:stable
+     container_name: matter-server
+     restart: unless-stopped
+     network_mode: host
+     security_opt:
+      - apparmor:unconfined
+     volumes:
+      - ${PATH_TO_DISK}/appdata/matter-server:/data
+     environment:
+      - TZ=${TZ}
+
    actualbudget:
     image: actualbudget/actual-server:latest
     container_name: actualbudget
