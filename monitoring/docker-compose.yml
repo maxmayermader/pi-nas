@@ -17,6 +17,7 @@ services:
     volumes:
       - ${PATH_TO_DISK}/appdata/beszel/socket:/beszel_socket
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${PATH_TO_DISK}/.beszel:/extra-filesystems/sda1:ro
     environment:
       LISTEN: /beszel_socket/beszel.sock
       HUB_URL: http://localhost:8090
