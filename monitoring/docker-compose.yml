@@ -1,0 +1,23 @@
+  beszel:
+    image: henrygd/beszel:latest
+    container_name: beszel
+    restart: unless-stopped
+    ports:
+      - 8090:8090
+    volumes:
+      - ${PATH_TO_DISK}/appdata/beszel/data:/beszel_data
+      - ${PATH_TO_DISK}/appdata/beszel/socket:/beszel_socket
+
+  beszel-agent:
+    image: henrygd/beszel-agent:latest
+    container_name: beszel-agent
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ${PATH_TO_DISK}/appdata/beszel/socket:/beszel_socket
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      LISTEN: /beszel_socket/beszel.sock
+      HUB_URL: http://localhost:8090
+      TOKEN: ${BESZEL_TOKEN}
+      KEY: ${BESZEL_KEY}
